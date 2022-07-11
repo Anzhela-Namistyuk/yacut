@@ -9,7 +9,7 @@ class URL_mapForm(FlaskForm):
         validators=[DataRequired(message='Обязательное поле'),
                     Length(1, 256)]
     )
-    custom_id = URLField(
+    custom_id = StringField(
         'Ваш вариант короткой ссылки',
         validators=[Length(1, 16), Optional()])
     submit = SubmitField('Создать')
