@@ -1,15 +1,11 @@
-import string
 import random
 from http import HTTPStatus
 
 from flask import abort, flash, redirect, render_template
 
 from . import app, db
-from .forms import URL_mapForm
+from .forms import URL_mapForm, letters_and_digits
 from .models import URL_map
-
-letters_and_digits = (string.ascii_letters +
-                      string.digits + string.ascii_uppercase)
 
 
 def get_unique_short_id():
@@ -40,7 +36,6 @@ def index_view():
 
 @app.route('/<string:short_id>')
 def get_original_link(short_id):
-    url_map = URL_map.query.filter_by(short=short_id).first()
-    if not url_map:
-        abort(404)
-    return redirect(url_map.original)
+    url_map = URL_map.query.filter_by(short=short_id).first_or_404()
+    if url_map:
+        return redirect(url_map.original)
